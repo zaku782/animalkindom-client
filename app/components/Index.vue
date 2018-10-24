@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="col-md-4 col-xs-12 col-sm-6 action-button">
-            <div class="btn btn-warning">
+            <div class="btn btn-warning" @click="openMap">
                 {{'map'|msg}}
             </div>
         </div>
@@ -73,8 +73,8 @@
             inventory: function () {
 
             },
-            map: function () {
-
+            openMap: function () {
+                App.router.$router.push('map');
             },
             signOut: function () {
                 Account.signOut().then(() => {

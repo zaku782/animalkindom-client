@@ -9,7 +9,7 @@
             </tr>
             <tr>
                 <th>{{'species'|msg}}</th>
-                <td>{{info.name|msg}}({{info.gender | msg}})</td>
+                <td>{{info.name|msg}}</td>
             </tr>
             <tr>
                 <th>{{'health'|msg}}</th>
@@ -49,10 +49,10 @@
                 <td>{{info.speed}}</td>
             </tr>
             <tr>
-                <th>{{'level_step'|msg}}</th>
+                <th>{{'grow_level'|msg}}</th>
                 <td>
                     <progress-bar color="progress-bar progress-bar-success"
-                                  :value="info.level" :base="info.levelStep"></progress-bar>
+                                  :value="info.growLevel" :base="info.maxGrowLevel"></progress-bar>
                 </td>
             </tr>
             </tbody>
@@ -71,7 +71,7 @@
         name: "Animal",
         data: function () {
             return {
-                img: require("../assets/images/wait.jpg"),
+                img: require("../assets/images/loading.gif"),
                 info: {}
             }
         },
@@ -79,8 +79,7 @@
             Animal.getInfo().then((res) => {
                 if (res.type !== 'danger') {
                     this.info = res.data;
-                    this.img = require("../assets/images/animal/" + this.info.name + "/" + this.info.gender + ".jpg");
-                    this.info.gender = this.info.gender == 1 ? "male" : "female";
+                    this.img = require("../assets/images/animal/" + this.info.name + "/" + parseInt(this.info.growLevel / 5) + ".jpg");
                     App.hub.$emit('sleep', this.info.sleepTime != null);
                 }
             })
