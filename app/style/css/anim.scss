@@ -1,0 +1,38 @@
+/*列表动画*/
+.li-list-enter-active {
+    transition: all 0.5s ease;
+}
+
+.li-list-leave-active {
+    transition: all 0.5s ease;
+}
+
+.li-list-enter,
+.li-list-leave-active {
+    transform: scale(0);
+    opacity: 0;
+}
+
+.li-list-leave-active {
+    position: absolute;
+    width: 100%;
+}
+
+/*渐变动画*/
+.fade-enter-active {
+    transition: all 0.5s ease;
+}
+
+.fade-leave-active {
+    transition: all 0.5s ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+    transform: scale(0);
+    opacity: 0;
+}
+
+.fade-leave-active {
+    opacity: 0;
+}

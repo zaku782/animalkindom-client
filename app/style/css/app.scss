@@ -1,0 +1,67 @@
+#app,
+body,
+html {
+  height: 100%;
+}
+
+body{
+  background: #ecf0f1 !important;
+  font-family: Microsoft YaHei !important;
+}
+
+.router-enter-active {
+  transition: all 0.3s ease;
+}
+
+.router-leave-active {
+  transition: all 0.3s ease;
+}
+
+.router-enter,
+.router-leave-active {
+  opacity: 0;
+}
+
+.goup-container {
+  z-index: 200;
+  background: #2c3e50 !important;
+}
+
+.icon-wrapper {
+  position: relative;
+}
+
+.field-icon {
+  font-size: 16px;
+  position: absolute;
+  right: 15px;
+  top: 3px;
+  transition: 0.25s;
+}
+
+.click-icon {
+  cursor: pointer;
+}
+
+.click-icon:hover {
+  color: #1aba9c;
+}
+
+.table th {
+  vertical-align: middle !important;
+  font-weight: bold;
+}
+
+.table-content-center {
+  margin-bottom: 0px !important;
+  th {
+    text-align: center;
+  }
+  td {
+    text-align: center;
+  }
+}
+
+.thumbnail {
+  margin-bottom: 0px !important;
+}
