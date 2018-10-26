@@ -47,7 +47,8 @@ module.exports = {
         extensions: [".js", ".css", ".scss", ".vue"],
         alias: {
             'vue': 'vue/dist/vue.min.js',
-            'jquery': "jquery/dist/jquery.min.js"
+            'jquery': "jquery/dist/jquery.min.js",
+            'svg':"svg.js/dist/svg.min.js"
         }
     },
     devServer: {
