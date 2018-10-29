@@ -4,27 +4,27 @@
             <info></info>
         </div>
         <div class="col-md-4 col-xs-12 col-sm-6 action-button ">
-            <div class="btn btn-info">
+            <div class="btn btn-info big-btn">
                 {{'explore'|msg}}
             </div>
         </div>
         <div class="col-md-4 col-xs-12 col-sm-6 action-button" @click="sleep">
-            <div class="btn btn-primary sleep">
+            <div class="btn btn-primary sleep big-btn">
                 {{sleepStatus|msg}}
             </div>
         </div>
         <div class="col-md-4 col-xs-12 col-sm-6 action-button">
-            <div class="btn btn-success">
+            <div class="btn btn-success big-btn">
                 {{'inventory'|msg}}
             </div>
         </div>
         <div class="col-md-4 col-xs-12 col-sm-6 action-button">
-            <div class="btn btn-warning" @click="openMap">
+            <div class="btn btn-warning big-btn" @click="openMap">
                 {{'map'|msg}}
             </div>
         </div>
         <div class="col-md-4 col-xs-12 col-sm-6 action-button" @click="signOut">
-            <div class="btn btn-danger">
+            <div class="btn btn-danger big-btn">
                 {{'sign_out'|msg}}
             </div>
         </div>

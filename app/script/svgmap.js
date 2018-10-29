@@ -16,18 +16,17 @@ let mapColor = '#5bc0de';
 let mapNameColor = '#fff';
 let mapLineColor = '#2c3e50';
 let mapCurrentColor = '#2c3e50';
-let mapChooseColor = '#5cb85c';
+let mapChooseLineWidth = 5;
+let mapUnChooseLineWidth = 1;
 let mapMoveZone = {x: {min: 0, max: 0}, y: {min: 0, max: 0}};
 
 export default {
-    drawMap: function (frame, canvasId, mapsData, mapInfoFunction) {
-
-        if (!draw) {
+    drawMap: function (frame, canvasId, mapsData, mapInfoFunction, resize) {
+        if (!resize) {
             draw = svg(canvasId)
-            mapFunction = mapInfoFunction;
-            maps = mapsData;
         }
-
+        mapFunction = mapInfoFunction;
+        maps = mapsData;
         drawMaps = [];
 
         let maxMapNumber = maps.discoveredMaps[maps.discoveredMaps.length - 1].id;
@@ -84,18 +83,10 @@ function drawOneMap(pos, map) {
             mapFunction(map)
         })
 
-    if (map.id === maps.current.id) {
-        rect.stroke({color: mapCurrentColor, width: 5})
-    } else {
-        rect.addClass('no-current')
-        rect.stroke({color: mapLineColor, width: 1})
-    }
-
     let text = draw.text(map.name + "")
         .font({
             family: 'Microsoft YaHei',
             weight: 'bold',
-            color: 'white',
             size: 15
         }).fill(mapNameColor).style('cursor', 'pointer').click(function () {
             rectChoose(rect, map.id)
@@ -103,6 +94,13 @@ function drawOneMap(pos, map) {
         });
 
     text.move(pos.x + (oneMapSize.x - text.length()) / 2, pos.y + (oneMapSize.y) / 2 - 10);
+
+    if (map.id === maps.current.id) {
+        text.fill(mapCurrentColor)
+        rect.stroke({color: mapLineColor, width: mapChooseLineWidth})
+    } else {
+        rect.stroke({color: mapLineColor, width: mapUnChooseLineWidth})
+    }
 
     //获得该节点四周节点
     let roundMaps = round(map.id);
@@ -135,11 +133,9 @@ function drawOneMap(pos, map) {
     }
 }
 
-function rectChoose(rect, mapId) {
-    draw.select('rect.no-current').stroke({color: mapLineColor, width: 1})
-    if (mapId !== maps.current.id) {
-        rect.stroke({color: mapChooseColor, width: 1})
-    }
+function rectChoose(rect) {
+    draw.select('rect').stroke({color: mapLineColor, width: mapUnChooseLineWidth})
+    rect.stroke({color: mapLineColor, width: mapChooseLineWidth})
 }
 
 function mapHasDiscovered(mapId) {

@@ -6,7 +6,7 @@
             </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 action-button">
-            <button type="button" class="btn btn-success enter-map-button"
+            <button type="button" class="btn btn-success enter-map-button big-btn"
                     :disabled="prohibit" @click="enterMap">{{'enter'|msg}}
             </button>
         </div>
@@ -45,7 +45,7 @@
             let component = this;
             component.drawMap();
             window.onresize = function temp() {
-                component.drawMap()
+                component.drawMap(true)
             }
         },
         methods: {
@@ -57,7 +57,7 @@
                     drawFrame.height(Math.min($(window).height() - 35, drawFrame.width()));
                 }
             },
-            drawMap: function () {
+            drawMap: function (resize) {
 
                 let component = this;
 
@@ -74,7 +74,7 @@
                         }, function (map) {
                             component.prohibit = !SvgMap.reachable(map.id);
                             component.mapName = map.name;
-                        });
+                        }, resize);
                     }
                 });
             },

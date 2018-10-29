@@ -9,14 +9,12 @@
                 <input type="password" class="form-control icon-input" v-model="password"
                        :placeholder=" 'password' | msg " id="login-pass">
             </div>
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-primary sign-btn" :data-loading-text=" 'signing' | msg "
-                        disabled="disabled" @click="signIn">{{ 'sign_in' | msg }}
-                </button>
-                <button type="button" class="btn btn-warning sign-btn" :data-loading-text=" 'signing' | msg "
-                        disabled="disabled" @click="signUp">{{ 'sign_up' | msg }}
-                </button>
-            </div>
+            <button type="button" class="btn btn-primary sign-btn" :data-loading-text=" 'signing' | msg "
+                    disabled="disabled" @click="signIn">{{ 'sign_in' | msg }}
+            </button>
+            <button type="button" class="btn btn-warning sign-btn" :data-loading-text=" 'signing' | msg "
+                    disabled="disabled" @click="signUp">{{ 'sign_up' | msg }}
+            </button>
 
         </div>
     </div>
