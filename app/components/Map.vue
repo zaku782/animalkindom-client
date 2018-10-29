@@ -5,12 +5,17 @@
                 <div id="drawing"></div>
             </div>
         </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 action-button">
+            <button type="button" class="btn btn-success enter-map-button"
+                    :disabled="prohibit" @click="enterMap">{{'enter'|msg}}
+            </button>
+        </div>
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 map-info">
             <table class="table table-bordered table-hover table-content-center table-striped">
                 <tbody>
                 <tr>
-                    <th>123</th>
-                    <td>123</td>
+                    <th>{{'mapName'|msg}}</th>
+                    <td>{{mapName}}</td>
                 </tr>
                 <tr>
                     <th>456</th>
@@ -25,33 +30,57 @@
 <script>
 
     import Message from '../script/message.js'
-    import Map from '../script/map.js'
-
-    function setMapFrameSize() {
-        let drawFrame = $(".draw-frame");
-        if ($(window).width() > Math.min($(window).height())) {
-            drawFrame.height($(window).height() - 35);
-        } else {
-            drawFrame.height(Math.min($(window).height() - 35, drawFrame.width()));
-        }
-    }
+    import SvgMap from '../script/svgmap.js'
+    import Map from '../script/server/map.js'
 
     export default {
         name: "Map",
         data: function () {
-            return {}
+            return {
+                prohibit: true,
+                mapName: ''
+            }
         },
         mounted: function () {
-            setMapFrameSize();
+            let component = this;
+            component.drawMap();
             window.onresize = function temp() {
-                //setMapFrameSize();
-            };
+                component.drawMap()
+            }
+        },
+        methods: {
+            setMapFrameSize: function () {
+                let drawFrame = $(".draw-frame");
+                if ($(window).width() > Math.min($(window).height())) {
+                    drawFrame.height($(window).height() - 35);
+                } else {
+                    drawFrame.height(Math.min($(window).height() - 35, drawFrame.width()));
+                }
+            },
+            drawMap: function () {
 
-            let maps = {current: 0, discoveredMaps: [0, 1, 2, 5, 6, 7, 11, 13, 14, 19, 21, 22, 23, 46]}
+                let component = this;
 
-            Map.drawMap($(".draw-frame"), 'drawing', maps, function (id) {
-                console.log("can " + (Map.reachable(id) ? "" : "not") + " go to map " + id);
-            });
+                this.setMapFrameSize();
+
+                Map.maps().then((res) => {
+                    if (res.type !== 'danger') {
+
+                        this.mapName = res.data[0].name;
+
+                        SvgMap.drawMap($(".draw-frame"), 'drawing', {
+                            current: res.data[0],
+                            discoveredMaps: res.data.slice(1)
+                        }, function (map) {
+                            component.prohibit = !SvgMap.reachable(map.id);
+                            component.mapName = map.name;
+                        });
+                    }
+                });
+            },
+            enterMap: function () {
+                console.log('enter!!')
+            },
         },
         components: {},
         filters: {
@@ -78,5 +107,14 @@
 
     #drawing {
         position: absolute;
+    }
+
+    .map {
+        user-select: none;
+    }
+
+    .action-button {
+        height: 125px;
+        margin-bottom: 15px;
     }
 </style>

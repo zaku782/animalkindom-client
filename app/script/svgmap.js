@@ -5,19 +5,41 @@ let mouseDownPos = {x: 0, y: 0}
 let canvasOffset = {left: 0, top: 0}
 let canvasCenter = {x: 0, y: 0}
 let oneMapSize = {x: 80, y: 80}
-let canvasHeight = 1500
-let canvasWidth = 1500
+let canvasHeight;
+let canvasWidth;
 let lineLength = 40;
 let drawMaps = [];
 let draw;
 let mapFunction;
 let maps;
+let mapColor = '#5bc0de';
+let mapNameColor = '#fff';
+let mapLineColor = '#2c3e50';
+let mapCurrentColor = '#2c3e50';
+let mapChooseColor = '#5cb85c';
+let mapMoveZone = {x: {min: 0, max: 0}, y: {min: 0, max: 0}};
 
 export default {
     drawMap: function (frame, canvasId, mapsData, mapInfoFunction) {
 
+        if (!draw) {
+            draw = svg(canvasId)
+            mapFunction = mapInfoFunction;
+            maps = mapsData;
+        }
+
+        drawMaps = [];
+
+        let maxMapNumber = maps.discoveredMaps[maps.discoveredMaps.length - 1].id;
+        let maxLoop = loopName(maxMapNumber);
+
         let canvas = $("#" + canvasId);
         addEvents(frame, canvas);
+
+        let minMapSizeForDraw = maxLoop * (oneMapSize.x + lineLength) * 2 + oneMapSize.x * 2;
+        canvasHeight = minMapSizeForDraw < frame.height() ? frame.height() : minMapSizeForDraw;
+        canvasWidth = minMapSizeForDraw < frame.width() ? frame.width() : minMapSizeForDraw;
+
         canvas.height(canvasHeight);
         canvas.width(canvasWidth);
         //将地图移动到中心位置
@@ -25,17 +47,21 @@ export default {
         canvasOffset.top = frame.height() / 2 - canvasHeight / 2;
         canvas.css('left', canvasOffset.left);
         canvas.css('top', canvasOffset.top);
+
+        let xOffset = (canvasWidth - frame.width()) / 2;
+        let yOffset = (canvasHeight - frame.height()) / 2;
+        mapMoveZone.x.min = canvasOffset.left - xOffset;
+        mapMoveZone.x.max = canvasOffset.left + xOffset;
+        mapMoveZone.y.min = canvasOffset.top - yOffset;
+        mapMoveZone.y.max = canvasOffset.top + yOffset;
+
         canvasCenter.x = canvasWidth / 2;
         canvasCenter.y = canvasHeight / 2;
 
-        //开始根据地图数据画图
-        draw = svg(canvasId)
-        mapFunction = mapInfoFunction;
-        maps = mapsData;
         drawMap();
     },
     reachable: function (toMap) {
-        return round(maps.current).includes(toMap) && maps.current !== toMap;
+        return round(maps.current.id).includes(toMap) && maps.current.id !== toMap;
     }
 }
 
@@ -43,64 +69,91 @@ function drawMap() {
     //中心地图为当前所在地图
     let centerMap = {x: canvasCenter.x - oneMapSize.x / 2, y: canvasCenter.y - oneMapSize.y / 2};
     //先画中心地图
-    drawMaps.push(maps.current);
+    drawMaps.push(maps.current.id);
     drawOneMap(centerMap, maps.current);
 }
 
-function drawOneMap(pos, mapName) {
-    draw.rect(oneMapSize.x, oneMapSize.y)
+function drawOneMap(pos, map) {
+
+    let rect = draw.rect(oneMapSize.x, oneMapSize.y)
         .style('cursor', 'pointer')
-        .attr({fill: '#0f7864'})
+        .attr({fill: mapColor})
         .move(pos.x, pos.y)
         .click(function () {
-            mapFunction(mapName)
+            rectChoose(this, map.id)
+            mapFunction(map)
         })
-    let text = draw.text(mapName + "")
+
+    if (map.id === maps.current.id) {
+        rect.stroke({color: mapCurrentColor, width: 5})
+    } else {
+        rect.addClass('no-current')
+        rect.stroke({color: mapLineColor, width: 1})
+    }
+
+    let text = draw.text(map.name + "")
         .font({
             family: 'Microsoft YaHei',
             weight: 'bold',
             color: 'white',
             size: 15
-        }).fill('#fff').style('cursor', 'pointer').click(function () {
-            mapFunction(mapName)
+        }).fill(mapNameColor).style('cursor', 'pointer').click(function () {
+            rectChoose(rect, map.id)
+            mapFunction(map)
         });
+
     text.move(pos.x + (oneMapSize.x - text.length()) / 2, pos.y + (oneMapSize.y) / 2 - 10);
 
     //获得该节点四周节点
-    let roundMaps = round(mapName);
+    let roundMaps = round(map.id);
 
-    if (maps.discoveredMaps.includes(roundMaps[0])) {
+    if (mapHasDiscovered(roundMaps[0])) {
         drawLine(0, 0, 0, lineLength, {x: pos.x + oneMapSize.x / 2, y: pos.y - lineLength})
         if (!drawMaps.includes(roundMaps[0])) {
             drawMaps.push(roundMaps[0]);
-            drawOneMap({x: pos.x, y: pos.y - lineLength - oneMapSize.y}, roundMaps[0]);
+            drawOneMap({x: pos.x, y: pos.y - lineLength - oneMapSize.y}, mapHasDiscovered(roundMaps[0]));
         }
     }
-    if (maps.discoveredMaps.includes(roundMaps[1])) {
+    if (mapHasDiscovered(roundMaps[1])) {
         drawLine(0, 0, lineLength, 0, {x: pos.x + oneMapSize.x, y: pos.y + oneMapSize.y / 2})
         if (!drawMaps.includes(roundMaps[1])) {
             drawMaps.push(roundMaps[1]);
-            drawOneMap({x: pos.x + oneMapSize.y + lineLength, y: pos.y}, roundMaps[1]);
+            drawOneMap({x: pos.x + oneMapSize.y + lineLength, y: pos.y}, mapHasDiscovered(roundMaps[1]));
         }
     }
-    if (maps.discoveredMaps.includes(roundMaps[2])) {
+    if (mapHasDiscovered(roundMaps[2])) {
         if (!drawMaps.includes(roundMaps[2])) {
             drawMaps.push(roundMaps[2]);
-            drawOneMap({x: pos.x, y: pos.y + lineLength + oneMapSize.y}, roundMaps[2]);
+            drawOneMap({x: pos.x, y: pos.y + lineLength + oneMapSize.y}, mapHasDiscovered(roundMaps[2]));
         }
     }
-    if (maps.discoveredMaps.includes(roundMaps[3])) {
+    if (mapHasDiscovered(roundMaps[3])) {
         if (!drawMaps.includes(roundMaps[3])) {
             drawMaps.push(roundMaps[3]);
-            drawOneMap({x: pos.x - oneMapSize.x - lineLength, y: pos.y}, roundMaps[3]);
+            drawOneMap({x: pos.x - oneMapSize.x - lineLength, y: pos.y}, mapHasDiscovered(roundMaps[3]));
         }
-
     }
+}
+
+function rectChoose(rect, mapId) {
+    draw.select('rect.no-current').stroke({color: mapLineColor, width: 1})
+    if (mapId !== maps.current.id) {
+        rect.stroke({color: mapChooseColor, width: 1})
+    }
+}
+
+function mapHasDiscovered(mapId) {
+    for (let map of maps.discoveredMaps.values()) {
+        if (map.id === mapId) {
+            return map;
+        }
+    }
+    return false;
 }
 
 function drawLine(x1, y1, x2, y2, move) {
     draw.line(x1, y1, x2, y2)
-        .stroke({color: '#2c3e50', width: 5})
+        .stroke({color: mapLineColor, width: 5})
         .move(move.x, move.y)
 }
 
@@ -127,7 +180,7 @@ function addEvents(frame, canvas) {
         if (mouseDown) {
             let xMove = e.pageX - mouseDownPos.x;
             let yMove = e.pageY - mouseDownPos.y;
-            moveCanvas(canvas, {left: canvasOffset.left + xMove, top: canvasOffset.top + yMove});
+            moveCanvas(canvas, {left: xMove, top: yMove});
         }
     });
     frame.mouseleave(function () {
@@ -143,7 +196,7 @@ function addEvents(frame, canvas) {
     frame.on("touchmove", function (e) {
         let xMove = e.touches[0].clientX - mouseDownPos.x;
         let yMove = e.touches[0].clientY - mouseDownPos.y;
-        moveCanvas(canvas, {left: canvasOffset.left + xMove, top: canvasOffset.top + yMove});
+        moveCanvas(canvas, {left: xMove, top: yMove});
     });
 
     frame.on("touchend", function () {
@@ -157,8 +210,8 @@ function recordCanvasOffset(canvas) {
 }
 
 function moveCanvas(canvas, move) {
-    canvas.css('left', move.left);
-    canvas.css('top', move.top);
+    canvas.css('left', Math.max(Math.min(move.left + canvasOffset.left, mapMoveZone.x.max), mapMoveZone.x.min));
+    canvas.css('top', Math.max(Math.min(move.top + canvasOffset.top, mapMoveZone.y.max), mapMoveZone.y.min));
 }
 
 
