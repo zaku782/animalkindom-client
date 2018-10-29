@@ -94,20 +94,6 @@
         margin-top: 15px;
     }
 
-    .action-button {
-        height: 125px;
-        margin-bottom: 15px;
-    }
-
-    .btn {
-        height: 100%;
-        width: 100%;
-        line-height: 2.2;
-        font-size: 45px;
-        font-weight: bold;
-        border-radius: 0px;
-    }
-
     .info {
         height: 100%;
     }

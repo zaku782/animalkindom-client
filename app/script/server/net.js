@@ -32,7 +32,7 @@ let request = function (api, type, data) {
     }
 
     return axiosRequest.then((response) => {
-        if (response && response.content === 'login_status_error') {
+        if (response.data && response.data.content === 'login_status_error') {
             if (location.hash === '#/index') {
                 Toastr.error(Message.filters('login_status_error'));
             }

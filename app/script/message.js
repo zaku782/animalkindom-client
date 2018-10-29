@@ -36,5 +36,8 @@ let msgs = {
     sleep: "睡眠",
     sleeping: "睡眠中",
     inventory: "仓库",
-    map: "地图"
+    map: "地图",
+    enter: "进入地图",
+    need_previous_map: "请先进入前一张地图",
+    mapName: "地名"
 }
