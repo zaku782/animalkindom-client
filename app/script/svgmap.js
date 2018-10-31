@@ -1,10 +1,10 @@
 import svg from 'svg'
 
-let mouseDown = false
-let mouseDownPos = {x: 0, y: 0}
-let canvasOffset = {left: 0, top: 0}
-let canvasCenter = {x: 0, y: 0}
-let oneMapSize = {x: 80, y: 80}
+let mouseDown = false;
+let mouseDownPos = {x: 0, y: 0};
+let canvasOffset = {left: 0, top: 0};
+let canvasCenter = {x: 0, y: 0};
+let oneMapSize = {x: 80, y: 80};
 let canvasHeight;
 let canvasWidth;
 let lineLength = 40;
@@ -18,12 +18,15 @@ let mapLineColor = '#2c3e50';
 let mapCurrentColor = '#2c3e50';
 let mapChooseLineWidth = 5;
 let mapUnChooseLineWidth = 1;
-let mapMoveZone = {x: {min: 0, max: 0}, y: {min: 0, max: 0}};
+let currentOffset = {x: 0, y: 0};
+let centerMap = {x: 0, y: 0};
 
 export default {
     drawMap: function (frame, canvasId, mapsData, mapInfoFunction, resize) {
         if (!resize) {
             draw = svg(canvasId)
+        } else {
+            draw.clear();
         }
         mapFunction = mapInfoFunction;
         maps = mapsData;
@@ -41,23 +44,17 @@ export default {
 
         canvas.height(canvasHeight);
         canvas.width(canvasWidth);
-        //将地图移动到中心位置
-        canvasOffset.left = frame.width() / 2 - canvasWidth / 2;
-        canvasOffset.top = frame.height() / 2 - canvasHeight / 2;
-        canvas.css('left', canvasOffset.left);
-        canvas.css('top', canvasOffset.top);
-
-        let xOffset = (canvasWidth - frame.width()) / 2;
-        let yOffset = (canvasHeight - frame.height()) / 2;
-        mapMoveZone.x.min = canvasOffset.left - xOffset;
-        mapMoveZone.x.max = canvasOffset.left + xOffset;
-        mapMoveZone.y.min = canvasOffset.top - yOffset;
-        mapMoveZone.y.max = canvasOffset.top + yOffset;
 
         canvasCenter.x = canvasWidth / 2;
         canvasCenter.y = canvasHeight / 2;
 
         drawMap();
+
+        //move current to center
+        canvasOffset.left = frame.width() / 2 - canvasWidth / 2 - (currentOffset.x - centerMap.x);
+        canvasOffset.top = frame.height() / 2 - canvasHeight / 2 - (currentOffset.y - centerMap.y);
+        canvas.css('left', canvasOffset.left);
+        canvas.css('top', canvasOffset.top);
     },
     reachable: function (toMap) {
         return round(maps.current.id).includes(toMap) && maps.current.id !== toMap;
@@ -65,11 +62,10 @@ export default {
 }
 
 function drawMap() {
-    //中心地图为当前所在地图
-    let centerMap = {x: canvasCenter.x - oneMapSize.x / 2, y: canvasCenter.y - oneMapSize.y / 2};
-    //先画中心地图
-    drawMaps.push(maps.current.id);
-    drawOneMap(centerMap, maps.current);
+    //first draw map with id 0
+    centerMap = {x: canvasCenter.x - oneMapSize.x / 2, y: canvasCenter.y - oneMapSize.y / 2};
+    drawMaps.push(maps.discoveredMaps[0].id);
+    drawOneMap(centerMap, maps.discoveredMaps[0]);
 }
 
 function drawOneMap(pos, map) {
@@ -79,9 +75,9 @@ function drawOneMap(pos, map) {
         .attr({fill: mapColor})
         .move(pos.x, pos.y)
         .click(function () {
-            rectChoose(this, map.id)
+            rectChoose(this, map.id);
             mapFunction(map)
-        })
+        });
 
     let text = draw.text(map.name + "")
         .font({
@@ -89,20 +85,22 @@ function drawOneMap(pos, map) {
             weight: 'bold',
             size: 15
         }).fill(mapNameColor).style('cursor', 'pointer').click(function () {
-            rectChoose(rect, map.id)
+            rectChoose(rect, map.id);
             mapFunction(map)
         });
 
     text.move(pos.x + (oneMapSize.x - text.length()) / 2, pos.y + (oneMapSize.y) / 2 - 10);
 
     if (map.id === maps.current.id) {
+        currentOffset.x = pos.x;
+        currentOffset.y = pos.y;
         text.fill(mapCurrentColor)
         rect.stroke({color: mapLineColor, width: mapChooseLineWidth})
     } else {
         rect.stroke({color: mapLineColor, width: mapUnChooseLineWidth})
     }
 
-    //获得该节点四周节点
+    //get round map
     let roundMaps = round(map.id);
 
     if (mapHasDiscovered(roundMaps[0])) {
@@ -206,8 +204,8 @@ function recordCanvasOffset(canvas) {
 }
 
 function moveCanvas(canvas, move) {
-    canvas.css('left', Math.max(Math.min(move.left + canvasOffset.left, mapMoveZone.x.max), mapMoveZone.x.min));
-    canvas.css('top', Math.max(Math.min(move.top + canvasOffset.top, mapMoveZone.y.max), mapMoveZone.y.min));
+    canvas.css('left', move.left + canvasOffset.left);
+    canvas.css('top', move.top + canvasOffset.top);
 }
 
 

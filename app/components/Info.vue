@@ -80,8 +80,13 @@
                 if (res.type !== 'danger') {
                     this.info = res.data;
                     this.img = require("../assets/images/animal/" + this.info.name + "/" + parseInt(this.info.growLevel / 5) + ".jpg");
-                    App.hub.$emit('sleep', this.info.sleepTime != null);
+                    App.hub.$emit('initSleep', this.info.sleepTime != null);
                 }
+            })
+
+            App.hub.$on('sleepEnd', (sleepData) => {
+                this.info.vigour = this.info.vigour + sleepData.vigourRecover;
+                this.info.satiety = this.info.satiety - sleepData.satietyCost;
             })
         },
         components: {

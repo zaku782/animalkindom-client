@@ -21,7 +21,6 @@
 </template>
 
 <script>
-    import Toastr from '../plugin/toastr/toastr.min'
     import Account from '../script/server/account.js'
     import App from '../script/app.js'
     import Message from '../script/message.js'
@@ -66,7 +65,7 @@
 
                 if (res.type === 'danger') {
                     $btn.button('reset');
-                    Toastr.error(Message.filters(res.content));
+                    Message.error(res.content);
                 } else if (res.type === 'success') {
                     App.router.$router.push('index')
                 }

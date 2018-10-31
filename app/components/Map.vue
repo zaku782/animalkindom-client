@@ -15,7 +15,7 @@
                 <tbody>
                 <tr>
                     <th>{{'mapName'|msg}}</th>
-                    <td>{{mapName}}</td>
+                    <td>{{chooseMap.name}}</td>
                 </tr>
                 <tr>
                     <th>456</th>
@@ -23,6 +23,10 @@
                 </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 action-button">
+            <button type="button" class="btn btn-info big-btn" @click="back">{{'back'|msg}}
+            </button>
         </div>
     </div>
 </template>
@@ -32,20 +36,22 @@
     import Message from '../script/message.js'
     import SvgMap from '../script/svgmap.js'
     import Map from '../script/server/map.js'
+    import App from '../script/app.js'
 
     export default {
         name: "Map",
         data: function () {
             return {
                 prohibit: true,
-                mapName: ''
+                chooseMap: {id: 0, name: ''},
+                maps: undefined
             }
         },
         mounted: function () {
             let component = this;
-            component.drawMap();
+            component.getMapAndDraw();
             window.onresize = function temp() {
-                component.drawMap(true)
+                component.getMapAndDraw()
             }
         },
         methods: {
@@ -57,30 +63,48 @@
                     drawFrame.height(Math.min($(window).height() - 35, drawFrame.width()));
                 }
             },
-            drawMap: function (resize) {
-
+            getMapAndDraw: function () {
                 let component = this;
-
                 this.setMapFrameSize();
 
-                Map.maps().then((res) => {
-                    if (res.type !== 'danger') {
-
-                        this.mapName = res.data[0].name;
-
-                        SvgMap.drawMap($(".draw-frame"), 'drawing', {
-                            current: res.data[0],
-                            discoveredMaps: res.data.slice(1)
-                        }, function (map) {
-                            component.prohibit = !SvgMap.reachable(map.id);
-                            component.mapName = map.name;
-                        }, resize);
-                    }
-                });
+                if (component.maps) {
+                    component.drawMap(component.maps, true)
+                } else {
+                    Map.maps().then((res) => {
+                        if (res.type !== 'danger') {
+                            component.chooseMap = res.data[0];
+                            component.maps = {
+                                current: res.data[0],
+                                discoveredMaps: res.data.slice(1)
+                            };
+                            component.drawMap(component.maps, false)
+                        }
+                    });
+                }
+            },
+            drawMap: function (mapData, resize) {
+                let component = this;
+                SvgMap.drawMap($(".draw-frame"), 'drawing', mapData, function (map) {
+                    component.prohibit = !SvgMap.reachable(map.id);
+                    component.chooseMap = map;
+                }, resize);
             },
             enterMap: function () {
-                console.log('enter!!')
+                let component = this;
+                Map.enter(component.chooseMap.id).then((res) => {
+                    if (res.type === 'success') {
+                        component.maps.current = component.chooseMap;
+                        component.prohibit = !SvgMap.reachable(component.maps.current.id);
+                        this.drawMap(component.maps, true);
+                    }
+                    if (res.type === 'warning') {
+                        Message.warning(res.content);
+                    }
+                })
             },
+            back: function () {
+                App.router.$router.push('index')
+            }
         },
         components: {},
         filters: {
@@ -115,6 +139,10 @@
 
     .action-button {
         height: 125px;
+        margin-bottom: 15px;
+    }
+
+    .map-info {
         margin-bottom: 15px;
     }
 </style>

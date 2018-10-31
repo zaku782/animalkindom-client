@@ -49,15 +49,7 @@
             }
         },
         mounted: function () {
-            Account.isLogin().then((res) => {
-                if (res.type === 'success') {
-
-                } else {
-                    App.router.$router.push('sign');
-                }
-            });
-
-            App.hub.$on('sleep', (sleep) => {
+            App.hub.$on('initSleep', (sleep) => {
                 this.sleepStatus = sleep ? 'sleeping' : 'sleep';
             })
         },
@@ -66,7 +58,11 @@
 
             },
             sleep: function () {
-                Animal.sleep().then(() => {
+                Animal.sleep().then((res) => {
+                    if (this.sleepStatus == 'sleeping') {
+                        Message.infoWithNoFilter(Message.filters('vigour_recover') + ' : ' + res.data.vigourRecover + ' ' + Message.filters('satiety_cost') + ' : ' + res.data.satietyCost)
+                        App.hub.$emit('sleepEnd', res.data);
+                    }
                     this.sleepStatus = this.sleepStatus == 'sleep' ? 'sleeping' : 'sleep';
                 })
             },
