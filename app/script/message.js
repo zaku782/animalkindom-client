@@ -59,9 +59,12 @@ let msgs = {
     need_previous_map: "请先进入前一张地图",
     mapName: "地名",
     map_move_wait: "您刚来到新的地方,休息片刻再启程吧",
-    not_enough_satiety: "体能不足",
+    not_enough_satiety: "饱食度不足",
     not_enough_vigour: "精力不足",
     back: "返回",
     vigour_recover: "精力恢复",
-    satiety_cost: "饱食度消耗"
-}
+    satiety_cost: "饱食度消耗",
+    vigour_cost: "精力消耗",
+    move_to: "移动到",
+    awake: "睡醒了"
+};

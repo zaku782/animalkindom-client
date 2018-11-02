@@ -96,6 +96,7 @@
                         component.maps.current = component.chooseMap;
                         component.prohibit = !SvgMap.reachable(component.maps.current.id);
                         this.drawMap(component.maps, true);
+                        Message.infoWithNoFilter(Message.filters('move_to') + component.chooseMap.name + '<br>' + Message.filters('vigour_cost') + ' : ' + res.data.vigourCost + '<br>' + Message.filters('satiety_cost') + ' : ' + res.data.satietyCost);
                     }
                     if (res.type === 'warning') {
                         Message.warning(res.content);

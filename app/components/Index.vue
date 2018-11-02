@@ -60,7 +60,7 @@
             sleep: function () {
                 Animal.sleep().then((res) => {
                     if (this.sleepStatus == 'sleeping') {
-                        Message.infoWithNoFilter(Message.filters('vigour_recover') + ' : ' + res.data.vigourRecover + ' ' + Message.filters('satiety_cost') + ' : ' + res.data.satietyCost)
+                        Message.infoWithNoFilter(Message.filters('awake') + '<br>' + Message.filters('vigour_recover') + ' : ' + res.data.vigourRecover + '<br>' + Message.filters('satiety_cost') + ' : ' + res.data.satietyCost)
                         App.hub.$emit('sleepEnd', res.data);
                     }
                     this.sleepStatus = this.sleepStatus == 'sleep' ? 'sleeping' : 'sleep';
