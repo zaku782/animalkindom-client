@@ -2,7 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import SignComponent from '../components/Sign.vue'
 import IndexComponent from '../components/Index.vue'
-import MapComponent from '../components/Map.vue'
+import LandComponent from '../components/Land.vue'
+import ExploreComponent from '../components/Explore.vue'
 
 //使用路由插件
 Vue.use(VueRouter)
@@ -16,7 +17,8 @@ export default {
                 {path: '/sign', component: SignComponent},
                 {path: '/', component: SignComponent},
                 {path: '/index', component: IndexComponent},
-                {path: '/map', component: MapComponent}
+                {path: '/land', component: LandComponent},
+                {path: '/explore', component: ExploreComponent}
             ]
 
             const router = new VueRouter({

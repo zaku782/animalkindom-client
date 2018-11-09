@@ -4,43 +4,43 @@ let mouseDown = false;
 let mouseDownPos = {x: 0, y: 0};
 let canvasOffset = {left: 0, top: 0};
 let canvasCenter = {x: 0, y: 0};
-let oneMapSize = {x: 80, y: 80};
+let oneLandSize = {x: 80, y: 80};
 let canvasHeight;
 let canvasWidth;
 let lineLength = 40;
-let drawMaps = [];
+let drawLands = [];
 let draw;
-let mapFunction;
-let maps;
-let mapColor = '#5bc0de';
-let mapNameColor = '#fff';
-let mapLineColor = '#2c3e50';
-let mapCurrentColor = '#2c3e50';
-let mapChooseLineWidth = 5;
-let mapUnChooseLineWidth = 1;
+let landFunction;
+let lands;
+let landColor = '#5bc0de';
+let landNameColor = '#fff';
+let landLineColor = '#2c3e50';
+let landCurrentColor = '#2c3e50';
+let landChooseLineWidth = 5;
+let landUnChooseLineWidth = 1;
 let currentOffset = {x: 0, y: 0};
-let centerMap = {x: 0, y: 0};
+let centerLand = {x: 0, y: 0};
 
 export default {
-    drawMap: function (frame, canvasId, mapsData, mapInfoFunction, resize) {
+    drawLand: function (frame, canvasId, landsData, landInfoFunction, resize) {
         if (!resize) {
             draw = svg(canvasId)
         } else {
             draw.clear();
         }
-        mapFunction = mapInfoFunction;
-        maps = mapsData;
-        drawMaps = [];
+        landFunction = landInfoFunction;
+        lands = landsData;
+        drawLands = [];
 
-        let maxMapNumber = maps.discoveredMaps[maps.discoveredMaps.length - 1].id;
-        let maxLoop = loopName(maxMapNumber);
+        let maxLandNumber = lands.discoveredLands[lands.discoveredLands.length - 1].id;
+        let maxLoop = loopName(maxLandNumber);
 
         let canvas = $("#" + canvasId);
         addEvents(frame, canvas);
 
-        let minMapSizeForDraw = maxLoop * (oneMapSize.x + lineLength) * 2 + oneMapSize.x * 2;
-        canvasHeight = minMapSizeForDraw < frame.height() ? frame.height() : minMapSizeForDraw;
-        canvasWidth = minMapSizeForDraw < frame.width() ? frame.width() : minMapSizeForDraw;
+        let minLandSizeForDraw = maxLoop * (oneLandSize.x + lineLength) * 2 + oneLandSize.x * 2;
+        canvasHeight = minLandSizeForDraw < frame.height() ? frame.height() : minLandSizeForDraw;
+        canvasWidth = minLandSizeForDraw < frame.width() ? frame.width() : minLandSizeForDraw;
 
         canvas.height(canvasHeight);
         canvas.width(canvasWidth);
@@ -48,98 +48,96 @@ export default {
         canvasCenter.x = canvasWidth / 2;
         canvasCenter.y = canvasHeight / 2;
 
-        drawMap();
+        drawLand();
 
         //move current to center
-        canvasOffset.left = frame.width() / 2 - canvasWidth / 2 - (currentOffset.x - centerMap.x);
-        canvasOffset.top = frame.height() / 2 - canvasHeight / 2 - (currentOffset.y - centerMap.y);
+        canvasOffset.left = frame.width() / 2 - canvasWidth / 2 - (currentOffset.x - centerLand.x);
+        canvasOffset.top = frame.height() / 2 - canvasHeight / 2 - (currentOffset.y - centerLand.y);
         canvas.css('left', canvasOffset.left);
         canvas.css('top', canvasOffset.top);
     },
-    reachable: function (toMap) {
-        return round(maps.current.id).includes(toMap) && maps.current.id !== toMap;
+    reachable: function (toLand) {
+        return round(lands.current.id).includes(toLand) && lands.current.id !== toLand;
     }
 }
 
-function drawMap() {
-    //first draw map with id 0
-    centerMap = {x: canvasCenter.x - oneMapSize.x / 2, y: canvasCenter.y - oneMapSize.y / 2};
-    drawMaps.push(maps.discoveredMaps[0].id);
-    drawOneMap(centerMap, maps.discoveredMaps[0]);
+function drawLand() {
+    centerLand = {x: canvasCenter.x - oneLandSize.x / 2, y: canvasCenter.y - oneLandSize.y / 2};
+    drawLands.push(lands.discoveredLands[0].id);
+    drawOneLand(centerLand, lands.discoveredLands[0]);
 }
 
-function drawOneMap(pos, map) {
+function drawOneLand(pos, land) {
 
-    let rect = draw.rect(oneMapSize.x, oneMapSize.y)
+    let rect = draw.rect(oneLandSize.x, oneLandSize.y)
         .style('cursor', 'pointer')
-        .attr({fill: mapColor})
+        .attr({fill: landColor})
         .move(pos.x, pos.y)
         .click(function () {
-            rectChoose(this, map.id);
-            mapFunction(map)
+            rectChoose(this, land.id);
+            landFunction(land)
         });
 
-    let text = draw.text(map.name + "")
+    let text = draw.text(land.name + "")
         .font({
             family: 'Microsoft YaHei',
             weight: 'bold',
             size: 15
-        }).fill(mapNameColor).style('cursor', 'pointer').click(function () {
-            rectChoose(rect, map.id);
-            mapFunction(map)
+        }).fill(landNameColor).style('cursor', 'pointer').click(function () {
+            rectChoose(rect, land.id);
+            landFunction(land)
         });
 
-    text.move(pos.x + (oneMapSize.x - text.length()) / 2, pos.y + (oneMapSize.y) / 2 - 10);
+    text.move(pos.x + (oneLandSize.x - text.length()) / 2, pos.y + (oneLandSize.y) / 2 - 10);
 
-    if (map.id === maps.current.id) {
+    if (land.id === lands.current.id) {
         currentOffset.x = pos.x;
         currentOffset.y = pos.y;
-        text.fill(mapCurrentColor)
-        rect.stroke({color: mapLineColor, width: mapChooseLineWidth})
+        text.fill(landCurrentColor)
+        rect.stroke({color: landLineColor, width: landChooseLineWidth})
     } else {
-        rect.stroke({color: mapLineColor, width: mapUnChooseLineWidth})
+        rect.stroke({color: landLineColor, width: landUnChooseLineWidth})
     }
 
-    //get round map
-    let roundMaps = round(map.id);
+    let roundLands = round(land.id);
 
-    if (mapHasDiscovered(roundMaps[0])) {
-        drawLine(0, 0, 0, lineLength, {x: pos.x + oneMapSize.x / 2, y: pos.y - lineLength})
-        if (!drawMaps.includes(roundMaps[0])) {
-            drawMaps.push(roundMaps[0]);
-            drawOneMap({x: pos.x, y: pos.y - lineLength - oneMapSize.y}, mapHasDiscovered(roundMaps[0]));
+    if (landHasDiscovered(roundLands[0])) {
+        drawLine(0, 0, 0, lineLength, {x: pos.x + oneLandSize.x / 2, y: pos.y - lineLength})
+        if (!drawLands.includes(roundLands[0])) {
+            drawLands.push(roundLands[0]);
+            drawOneLand({x: pos.x, y: pos.y - lineLength - oneLandSize.y}, landHasDiscovered(roundLands[0]));
         }
     }
-    if (mapHasDiscovered(roundMaps[1])) {
-        drawLine(0, 0, lineLength, 0, {x: pos.x + oneMapSize.x, y: pos.y + oneMapSize.y / 2})
-        if (!drawMaps.includes(roundMaps[1])) {
-            drawMaps.push(roundMaps[1]);
-            drawOneMap({x: pos.x + oneMapSize.y + lineLength, y: pos.y}, mapHasDiscovered(roundMaps[1]));
+    if (landHasDiscovered(roundLands[1])) {
+        drawLine(0, 0, lineLength, 0, {x: pos.x + oneLandSize.x, y: pos.y + oneLandSize.y / 2})
+        if (!drawLands.includes(roundLands[1])) {
+            drawLands.push(roundLands[1]);
+            drawOneLand({x: pos.x + oneLandSize.y + lineLength, y: pos.y}, landHasDiscovered(roundLands[1]));
         }
     }
-    if (mapHasDiscovered(roundMaps[2])) {
-        if (!drawMaps.includes(roundMaps[2])) {
-            drawMaps.push(roundMaps[2]);
-            drawOneMap({x: pos.x, y: pos.y + lineLength + oneMapSize.y}, mapHasDiscovered(roundMaps[2]));
+    if (landHasDiscovered(roundLands[2])) {
+        if (!drawLands.includes(roundLands[2])) {
+            drawLands.push(roundLands[2]);
+            drawOneLand({x: pos.x, y: pos.y + lineLength + oneLandSize.y}, landHasDiscovered(roundLands[2]));
         }
     }
-    if (mapHasDiscovered(roundMaps[3])) {
-        if (!drawMaps.includes(roundMaps[3])) {
-            drawMaps.push(roundMaps[3]);
-            drawOneMap({x: pos.x - oneMapSize.x - lineLength, y: pos.y}, mapHasDiscovered(roundMaps[3]));
+    if (landHasDiscovered(roundLands[3])) {
+        if (!drawLands.includes(roundLands[3])) {
+            drawLands.push(roundLands[3]);
+            drawOneLand({x: pos.x - oneLandSize.x - lineLength, y: pos.y}, landHasDiscovered(roundLands[3]));
         }
     }
 }
 
 function rectChoose(rect) {
-    draw.select('rect').stroke({color: mapLineColor, width: mapUnChooseLineWidth})
-    rect.stroke({color: mapLineColor, width: mapChooseLineWidth})
+    draw.select('rect').stroke({color: landLineColor, width: landUnChooseLineWidth})
+    rect.stroke({color: landLineColor, width: landChooseLineWidth})
 }
 
-function mapHasDiscovered(mapId) {
-    for (let map of maps.discoveredMaps.values()) {
-        if (map.id === mapId) {
-            return map;
+function landHasDiscovered(landId) {
+    for (let land of lands.discoveredLands.values()) {
+        if (land.id === landId) {
+            return land;
         }
     }
     return false;
@@ -147,7 +145,7 @@ function mapHasDiscovered(mapId) {
 
 function drawLine(x1, y1, x2, y2, move) {
     draw.line(x1, y1, x2, y2)
-        .stroke({color: mapLineColor, width: 5})
+        .stroke({color: landLineColor, width: 5})
         .move(move.x, move.y)
 }
 

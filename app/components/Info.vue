@@ -111,8 +111,4 @@
         height: 100%;
         margin-bottom: 15px !important;
     }
-
-    .table-bordered th, td {
-        border: 1px solid #d0d5d6 !important;
-    }
 </style>

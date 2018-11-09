@@ -3,7 +3,7 @@
         <div class="col-md-4 col-xs-12 col-sm-6 info">
             <info></info>
         </div>
-        <div class="col-md-4 col-xs-12 col-sm-6 action-button ">
+        <div class="col-md-4 col-xs-12 col-sm-6 action-button" @click="explore">
             <div class="btn btn-info big-btn">
                 {{'explore'|msg}}
             </div>
@@ -19,8 +19,8 @@
             </div>
         </div>
         <div class="col-md-4 col-xs-12 col-sm-6 action-button">
-            <div class="btn btn-warning big-btn" @click="openMap">
-                {{'map'|msg}}
+            <div class="btn btn-warning big-btn" @click="land">
+                {{'land'|msg}}
             </div>
         </div>
         <div class="col-md-4 col-xs-12 col-sm-6 action-button" @click="signOut">
@@ -69,13 +69,16 @@
             inventory: function () {
 
             },
-            openMap: function () {
-                App.router.$router.push('map');
+            land: function () {
+                App.router.$router.push('land');
             },
             signOut: function () {
                 Account.signOut().then(() => {
                     App.router.$router.push('sign');
                 })
+            },
+            explore: function () {
+                App.router.$router.push('explore');
             }
         },
         components: {Info},

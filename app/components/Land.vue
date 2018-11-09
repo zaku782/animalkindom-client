@@ -1,21 +1,21 @@
 <template>
-    <div class="map row">
+    <div class="land row">
         <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
             <div class="draw-frame">
                 <div id="drawing"></div>
             </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 action-button">
-            <button type="button" class="btn btn-success enter-map-button big-btn"
-                    :disabled="prohibit" @click="enterMap">{{'enter'|msg}}
+            <button type="button" class="btn btn-success enter-land-button big-btn"
+                    :disabled="prohibit" @click="enterLand">{{'enter'|msg}}
             </button>
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 map-info">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 land-info">
             <table class="table table-bordered table-hover table-content-center table-striped">
                 <tbody>
                 <tr>
-                    <th>{{'mapName'|msg}}</th>
-                    <td>{{chooseMap.name}}</td>
+                    <th>{{'landName'|msg}}</th>
+                    <td>{{chooseLand.name}}</td>
                 </tr>
                 <tr>
                     <th>456</th>
@@ -34,28 +34,28 @@
 <script>
 
     import Message from '../script/message.js'
-    import SvgMap from '../script/svgmap.js'
-    import Map from '../script/server/map.js'
+    import SvgLand from '../script/svgland.js'
+    import Land from '../script/server/land.js'
     import App from '../script/app.js'
 
     export default {
-        name: "Map",
+        name: "Land",
         data: function () {
             return {
                 prohibit: true,
-                chooseMap: {id: 0, name: ''},
-                maps: undefined
+                chooseLand: {id: 0, name: ''},
+                lands: undefined
             }
         },
         mounted: function () {
             let component = this;
-            component.getMapAndDraw();
+            component.getLandAndDraw();
             window.onresize = function temp() {
-                component.getMapAndDraw()
+                component.getLandAndDraw()
             }
         },
         methods: {
-            setMapFrameSize: function () {
+            setLandFrameSize: function () {
                 let drawFrame = $(".draw-frame");
                 if ($(window).width() > Math.min($(window).height())) {
                     drawFrame.height($(window).height() - 35);
@@ -63,40 +63,40 @@
                     drawFrame.height(Math.min($(window).height() - 35, drawFrame.width()));
                 }
             },
-            getMapAndDraw: function () {
+            getLandAndDraw: function () {
                 let component = this;
-                this.setMapFrameSize();
+                this.setLandFrameSize();
 
-                if (component.maps) {
-                    component.drawMap(component.maps, true)
+                if (component.lands) {
+                    component.drawLand(component.lands, true)
                 } else {
-                    Map.maps().then((res) => {
+                    Land.lands().then((res) => {
                         if (res.type !== 'danger') {
-                            component.chooseMap = res.data[0];
-                            component.maps = {
+                            component.chooseLand = res.data[0];
+                            component.lands = {
                                 current: res.data[0],
-                                discoveredMaps: res.data.slice(1)
+                                discoveredLands: res.data.slice(1)
                             };
-                            component.drawMap(component.maps, false)
+                            component.drawLand(component.lands, false)
                         }
                     });
                 }
             },
-            drawMap: function (mapData, resize) {
+            drawLand: function (landData, resize) {
                 let component = this;
-                SvgMap.drawMap($(".draw-frame"), 'drawing', mapData, function (map) {
-                    component.prohibit = !SvgMap.reachable(map.id);
-                    component.chooseMap = map;
+                SvgLand.drawLand($(".draw-frame"), 'drawing', landData, function (land) {
+                    component.prohibit = !SvgLand.reachable(land.id);
+                    component.chooseLand = land;
                 }, resize);
             },
-            enterMap: function () {
+            enterLand: function () {
                 let component = this;
-                Map.enter(component.chooseMap.id).then((res) => {
+                Land.enter(component.chooseLand.id).then((res) => {
                     if (res.type === 'success') {
-                        component.maps.current = component.chooseMap;
-                        component.prohibit = !SvgMap.reachable(component.maps.current.id);
-                        this.drawMap(component.maps, true);
-                        Message.infoWithNoFilter(Message.filters('move_to') + component.chooseMap.name + '<br>' + Message.filters('vigour_cost') + ' : ' + res.data.vigourCost + '<br>' + Message.filters('satiety_cost') + ' : ' + res.data.satietyCost);
+                        component.lands.current = component.chooseLand;
+                        component.prohibit = !SvgLand.reachable(component.lands.current.id);
+                        this.drawLand(component.lands, true);
+                        Message.infoWithNoFilter(Message.filters('move_to') + component.chooseLand.name + '<br>' + Message.filters('vigour_cost') + ' : ' + res.data.vigourCost + '<br>' + Message.filters('satiety_cost') + ' : ' + res.data.satietyCost);
                     }
                     if (res.type === 'warning') {
                         Message.warning(res.content);
@@ -134,7 +134,7 @@
         position: absolute;
     }
 
-    .map {
+    .land {
         user-select: none;
     }
 
@@ -143,7 +143,7 @@
         margin-bottom: 15px;
     }
 
-    .map-info {
+    .land-info {
         margin-bottom: 15px;
     }
 </style>
