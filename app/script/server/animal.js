@@ -18,5 +18,14 @@ export default {
     },
     eatAtOnce: function (plantName) {
         return Net.get('/animal/eatAtOnce/' + plantName + '/');
+    },
+    getBagLoad: function () {
+        return Net.get('/animal/getBagLoad/');
+    },
+    getBagItems: function () {
+        return Net.get('/animal/getBagItems/');
+    },
+    eatFromBag: function (itemId) {
+        return Net.get('/animal/eatFromBag/' + itemId + '/');
     }
 }

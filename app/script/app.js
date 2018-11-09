@@ -4,6 +4,7 @@ import SignComponent from '../components/Sign.vue'
 import IndexComponent from '../components/Index.vue'
 import LandComponent from '../components/Land.vue'
 import ExploreComponent from '../components/Explore.vue'
+import BagItemComponent from '../components/BagItem.vue'
 
 //使用路由插件
 Vue.use(VueRouter)
@@ -18,7 +19,8 @@ export default {
                 {path: '/', component: SignComponent},
                 {path: '/index', component: IndexComponent},
                 {path: '/land', component: LandComponent},
-                {path: '/explore', component: ExploreComponent}
+                {path: '/explore', component: ExploreComponent},
+                {path: '/items',name:'Items', component: BagItemComponent}
             ]
 
             const router = new VueRouter({

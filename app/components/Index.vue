@@ -14,8 +14,8 @@
             </div>
         </div>
         <div class="col-md-4 col-xs-12 col-sm-6 action-button">
-            <div class="btn btn-success big-btn">
-                {{'inventory'|msg}}
+            <div class="btn btn-success big-btn" @click="items">
+                {{'items'|msg}}
             </div>
         </div>
         <div class="col-md-4 col-xs-12 col-sm-6 action-button">
@@ -49,8 +49,8 @@
             }
         },
         mounted: function () {
-            App.hub.$on('initSleep', (sleep) => {
-                this.sleepStatus = sleep ? 'sleeping' : 'sleep';
+            App.hub.$on('infoLoaded', (info) => {
+                this.sleepStatus = info.sleeping ? 'sleeping' : 'sleep';
             })
         },
         methods: {
@@ -66,8 +66,8 @@
                     this.sleepStatus = this.sleepStatus == 'sleep' ? 'sleeping' : 'sleep';
                 })
             },
-            inventory: function () {
-
+            items: function () {
+                App.router.$router.push('items');
             },
             land: function () {
                 App.router.$router.push('land');
