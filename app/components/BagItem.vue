@@ -9,25 +9,28 @@
                    class="table table-bordered table-hover table-content-center table-striped table-th-horizontal">
                 <tr>
                     <th>
-                        {{"find_name"|msg}}
+                        {{"res_name"|msg}}
                     </th>
                     <th>
-                        {{"find_function"|msg}}
+                        {{"res_function"|msg}}
                     </th>
                     <th>
-                        {{"find_operation"|msg}}
+                        {{"item_weight"|msg}}
+                    </th>
+                    <th>
+                        {{"res_operation"|msg}}
                     </th>
                 </tr>
                 <tbody>
-                <tr v-for="plant in plants">
-                    <td>{{plant.name|msg}}</td>
-                    <td>{{'satiety'|msg}}<strong>+{{plant.satietyAdd}}</strong> {{'vigour'|msg}}<strong>+{{plant.vigourAdd}}</strong>
+                <tr v-for="item in items">
+                    <td>{{item.name|msg}}</td>
+                    <td>{{'satiety'|msg}}<strong>+{{item.satietyAdd}}</strong> {{'vigour'|msg}}<strong>+{{item.vigourAdd}}</strong>
                     </td>
+                    <td>{{item.weight}}</td>
                     <td>
-                        <button type="button" class="btn btn-info btn-sm" @click="eatAtOnce(plant)">
+                        <button type="button" class="btn btn-info btn-sm" @click="eatFromBag(item)">
                             {{'eat'|msg}}
                         </button>
-                        <button type="button" class="btn btn-success btn-sm" @click="collect">{{'collect'|msg}}</button>
                     </td>
                 </tr>
                 </tbody>
@@ -49,7 +52,14 @@
                 if (res.type === 'success') {
                     this.bagLoad = res.data
                 }
-            })
+            }).then(Animal.getBagItems().then((res) => {
+                if (res.type === 'success') {
+                    this.items = res.data;
+                    for (let item of this.items) {
+                        this.bagLoad -= item.weight;
+                    }
+                }
+            }));
         },
         data: function () {
             return {
@@ -58,15 +68,15 @@
             }
         },
         methods: {
-            eatAtOnce: function (item) {
+            eatFromBag: function (item) {
                 Animal.eatFromBag(item.id).then((res) => {
                     if (res.type === 'success') {
                         Message.infoWithNoFilter(
                             Message.filters('vigour_recover') + ' : ' + res.data.vigourAdd + '<br>' +
-                            Message.filters('satiety_recover') + ' : ' + res.data.satietyAdd)
+                            Message.filters('satiety_recover') + ' : ' + res.data.satietyAdd);
+                        this.bagLoad += item.weight;
                         this.items = this.items.filter(i => i !== item);
                     }
-
                 })
             }
         },
@@ -93,5 +103,11 @@
         margin-top: 15px;
         font-weight: bold;
         font-size: 3em;
+    }
+
+    @media screen and (max-width: 400px) {
+        .load-tip {
+            font-size: 2em;
+        }
     }
 </style>

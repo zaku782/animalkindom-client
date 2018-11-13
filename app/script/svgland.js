@@ -68,7 +68,6 @@ function drawLand() {
 }
 
 function drawOneLand(pos, land) {
-
     let rect = draw.rect(oneLandSize.x, oneLandSize.y)
         .style('cursor', 'pointer')
         .attr({fill: landColor})
@@ -135,7 +134,7 @@ function rectChoose(rect) {
 }
 
 function landHasDiscovered(landId) {
-    for (let land of lands.discoveredLands.values()) {
+    for (let land of lands.discoveredLands) {
         if (land.id === landId) {
             return land;
         }
@@ -182,13 +181,15 @@ function addEvents(frame, canvas) {
     //touch---------------------------------------------------------------------------------
     frame.on("touchstart", function (e) {
         mouseDownPos.x = e.touches[0].clientX;
-        mouseDownPos.y = e.touches[0].clientY
+        mouseDownPos.y = e.touches[0].clientY;
+        e.stopPropagation();
     });
 
     frame.on("touchmove", function (e) {
         let xMove = e.touches[0].clientX - mouseDownPos.x;
         let yMove = e.touches[0].clientY - mouseDownPos.y;
         moveCanvas(canvas, {left: xMove, top: yMove});
+        e.stopPropagation();
     });
 
     frame.on("touchend", function () {

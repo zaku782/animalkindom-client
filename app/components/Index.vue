@@ -54,23 +54,24 @@
             })
         },
         methods: {
-            explore: function () {
-
-            },
             sleep: function () {
                 Animal.sleep().then((res) => {
-                    if (this.sleepStatus == 'sleeping') {
+                    if (this.sleepStatus === 'sleeping') {
                         Message.infoWithNoFilter(Message.filters('awake') + '<br>' + Message.filters('vigour_recover') + ' : ' + res.data.vigourRecover + '<br>' + Message.filters('satiety_cost') + ' : ' + res.data.satietyCost)
                         App.hub.$emit('sleepEnd', res.data);
                     }
-                    this.sleepStatus = this.sleepStatus == 'sleep' ? 'sleeping' : 'sleep';
+                    this.sleepStatus = this.sleepStatus === 'sleep' ? 'sleeping' : 'sleep';
                 })
             },
             items: function () {
-                App.router.$router.push('items');
+                this.act(() => {
+                    App.router.$router.push('items');
+                })
             },
             land: function () {
-                App.router.$router.push('land');
+                this.act(() => {
+                    App.router.$router.push('land');
+                })
             },
             signOut: function () {
                 Account.signOut().then(() => {
@@ -78,7 +79,16 @@
                 })
             },
             explore: function () {
-                App.router.$router.push('explore');
+                this.act(() => {
+                    App.router.$router.push('explore');
+                })
+            },
+            act: function (action) {
+                if (this.sleepStatus !== 'sleeping') {
+                    action();
+                } else {
+                    Message.error('need_awake')
+                }
             }
         },
         components: {Info},

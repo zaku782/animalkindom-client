@@ -53,6 +53,7 @@ let msgs = {
     explore: "探索",
     sleep: "睡眠",
     sleeping: "睡眠中",
+    need_awake: "你还在睡眠中...",
     items: "行囊",
     land: "地图",
     enter: "进入地图",
@@ -71,9 +72,9 @@ let msgs = {
     start: "开始",
     exploring: "探索中 ... ",
     start_explore: "开始探索",
-    find_name: "名称",
-    find_function: "用途",
-    find_operation: "操作",
+    res_name: "名称",
+    res_function: "用途",
+    res_operation: "操作",
     collect: "收集",
     eat: "食用",
     /*---------------------------plants---------------------------------------*/
@@ -90,5 +91,8 @@ let msgs = {
     explore_tip: "开始探索会清空目前探索到的资源",
     /*-----------------------------------------------------------------------*/
     bag_empty: "空的行囊",
-    bag_load: "承重"
+    bag_load: "剩余可承重",
+    save_to_bag: "已放入背包",
+    item_weight: "重量",
+    bag_full: "行囊过重"
 };

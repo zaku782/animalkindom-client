@@ -24,10 +24,6 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 action-button">
-            <button type="button" class="btn btn-info big-btn" @click="back">{{'back'|msg}}
-            </button>
-        </div>
     </div>
 </template>
 
@@ -102,9 +98,6 @@
                         Message.warning(res.content);
                     }
                 })
-            },
-            back: function () {
-                App.router.$router.push('index')
             }
         },
         components: {},

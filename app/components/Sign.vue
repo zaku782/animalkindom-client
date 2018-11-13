@@ -84,7 +84,7 @@
             });
 
             Account.isLogin().then((res) => {
-                if (res.type === 'success') {
+                if (res && res.type === 'success') {
                     App.router.$router.push('index');
                 }
             });

@@ -12,7 +12,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].[chunkhash].js',
-        publicPath: 'http://localhost:8888/',
+        publicPath: 'http://10.4.20.252:8888/',
         chunkFilename: '[name].[chunkhash].js'
     },
     module: {
@@ -48,13 +48,14 @@ module.exports = {
         alias: {
             'vue': 'vue/dist/vue.min.js',
             'jquery': "jquery/dist/jquery.min.js",
-            'svg':"svg.js/dist/svg.min.js"
+            'svg': "svg.js/dist/svg.min.js"
         }
     },
     devServer: {
         colors: true,
         inline: true,
-        port: 8888
+        port: 8888,
+        disableHostCheck: true
     },
     plugins: [
         new HtmlWebpackPlugin({

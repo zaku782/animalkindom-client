@@ -10,13 +10,16 @@
                    class="table table-bordered table-hover table-content-center table-striped table-th-horizontal">
                 <tr>
                     <th>
-                        {{"find_name"|msg}}
+                        {{"res_name"|msg}}
                     </th>
                     <th>
-                        {{"find_function"|msg}}
+                        {{"res_function"|msg}}
                     </th>
                     <th>
-                        {{"find_operation"|msg}}
+                        {{"item_weight"|msg}}
+                    </th>
+                    <th>
+                        {{"res_operation"|msg}}
                     </th>
                 </tr>
                 <tbody>
@@ -24,11 +27,14 @@
                     <td>{{plant.name|msg}}</td>
                     <td>{{'satiety'|msg}}<strong>+{{plant.satietyAdd}}</strong> {{'vigour'|msg}}<strong>+{{plant.vigourAdd}}</strong>
                     </td>
+                    <td>{{plant.weight}}</td>
                     <td>
                         <button type="button" class="btn btn-info btn-sm" @click="eatAtOnce(plant)">
                             {{'eat'|msg}}
                         </button>
-                        <button type="button" class="btn btn-success btn-sm" @click="collect">{{'collect'|msg}}</button>
+                        <button type="button" class="btn btn-success btn-sm" @click="collectPlant(plant)">
+                            {{'collect'|msg}}
+                        </button>
                     </td>
                 </tr>
                 </tbody>
@@ -74,8 +80,15 @@
                     }
                 )
             },
-            collect: function () {
-
+            collectPlant: function (plant) {
+                Animal.collectPlant(plant.name).then((res) => {
+                    if (res.type === 'success') {
+                        Message.info('save_to_bag')
+                        this.plants = this.plants.filter(p => p !== plant);
+                    } else {
+                        Message.error(res.content);
+                    }
+                })
             },
             eatAtOnce: function (plant) {
                 Animal.eatAtOnce(plant.name).then((res) => {
@@ -115,5 +128,12 @@
         display: inline;
         padding: 12px;
         vertical-align: middle;
+    }
+
+    @media screen and (max-width: 400px) {
+        .explore-tip {
+            display: block;
+            margin-top: 15px;
+        }
     }
 </style>
