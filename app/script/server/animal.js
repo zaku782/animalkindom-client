@@ -13,8 +13,8 @@ export default {
     isExploring: function () {
         return Net.get('/animal/isExploring/');
     },
-    getFinds: function () {
-        return Net.get('/animal/getFinds/');
+    getFindPlants: function () {
+        return Net.get('/animal/getFindPlants/');
     },
     eatAtOnce: function (plantName) {
         return Net.get('/animal/eatAtOnce/' + plantName + '/');

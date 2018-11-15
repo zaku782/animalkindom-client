@@ -14,12 +14,12 @@
             <table class="table table-bordered table-hover table-content-center table-striped">
                 <tbody>
                 <tr>
-                    <th>{{'landName'|msg}}</th>
+                    <th>{{'land_name'|msg}}</th>
                     <td>{{chooseLand.name}}</td>
                 </tr>
                 <tr>
-                    <th>456</th>
-                    <td>456</td>
+                    <th>{{'plant_rate'|msg}}</th>
+                    <td>{{chooseLand.plantRate}}%</td>
                 </tr>
                 </tbody>
             </table>

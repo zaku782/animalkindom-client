@@ -83,7 +83,7 @@ body {
 }
 
 .table-bordered th, td {
-  border: 1px solid #d0d5d6 !important;
+
 }
 
 .table-th-horizontal {
@@ -99,11 +99,11 @@ body {
 @media screen and (max-width: 400px) {
   .table-th-horizontal {
     th {
-      font-size: 1em;
+      font-size: .8em;
       padding: 5px 0 5px 0;
     }
     td {
-      font-size: 1em;
+      font-size: .8em;
       padding: 5px 0 5px 0 !important;
     }
   }

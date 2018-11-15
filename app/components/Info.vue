@@ -1,7 +1,7 @@
 <template>
     <div class="info">
         <img :src="img" class="profile"/>
-        <table class="table table-bordered table-hover table-content-center table-striped">
+        <table class="table table-content-center table-striped">
             <tbody>
             <tr>
                 <th>{{'name'|msg}}</th>
@@ -49,10 +49,14 @@
                 <td>{{info.speed}}</td>
             </tr>
             <tr>
-                <th>{{'grow_level'|msg}}</th>
+                <th>{{'metempsychosisCount'|msg}}</th>
                 <td>
-                    <progress-bar color="progress-bar progress-bar-success"
-                                  :value="info.growLevel" :base="info.maxGrowLevel"></progress-bar>
+                    <div class="timer">
+                        <span class="days"></span>{{'day'|msg}}
+                        <span class="hours"></span>{{'hour'|msg}}
+                        <span class="minutes"></span>{{'minute'|msg}}
+                        <span class="seconds"></span>{{'second'|msg}}
+                    </div>
                 </td>
             </tr>
             </tbody>
@@ -61,7 +65,7 @@
 </template>
 
 <script>
-
+    require('../plugin/countdown/js/jquery.countdown.js');
     import Animal from '../script/server/animal.js'
     import Message from '../script/message.js'
     import ProgressBar from './ProgressBar.vue'
@@ -72,7 +76,8 @@
         data: function () {
             return {
                 img: require("../assets/images/loading.gif"),
-                info: {}
+                info: {},
+                canMetempsychosis: false
             }
         },
         mounted: function () {
@@ -84,6 +89,24 @@
                         'sleeping': this.info.sleepTime != null
                     });
                     Animal.animalInfo = this.info;
+
+                    let endTime = parseInt(this.info.metempsychosisTime) + parseInt(this.info.growDay * 24 * 3600 * 1000);
+                    $('.timer').countdown(endTime, (event) => {
+                        let $this = $(this.$el);
+                        switch (event.type) {
+                            case "seconds":
+                            case "minutes":
+                            case "hours":
+                            case "days":
+                            case "weeks":
+                            case "daysLeft":
+                                $this.find('span.' + event.type).html(event.value);
+                                break;
+                            case "finished":
+                                this.canMetempsychosis = true;
+                                break;
+                        }
+                    });
                 }
             });
 

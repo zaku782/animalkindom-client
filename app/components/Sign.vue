@@ -2,7 +2,7 @@
     <div class="login-screen">
         <div class="login-form">
             <div>
-                <input type="text" class="form-control icon-input" v-model="name" :placeholder=" 'your_name' | msg "
+                <input type="text" class="form-control icon-input" v-model="name" :placeholder=" 'name' | msg "
                        id="login-name">
             </div>
             <div>
@@ -15,7 +15,6 @@
             <button type="button" class="btn btn-warning sign-btn" :data-loading-text=" 'signing' | msg "
                     disabled="disabled" @click="signUp">{{ 'sign_up' | msg }}
             </button>
-
         </div>
     </div>
 </template>
