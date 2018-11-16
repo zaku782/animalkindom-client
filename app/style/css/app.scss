@@ -48,7 +48,6 @@ body {
 }
 
 .table th {
-  vertical-align: middle !important;
   font-weight: bold;
 }
 
@@ -79,7 +78,10 @@ body {
   line-height: 2.2 !important;
   font-size: 45px !important;
   font-weight: bold !important;
-  border-radius: 0px !important;
+}
+
+.btn {
+  border-radius: 0 !important;
 }
 
 .table-bordered th, td {
@@ -94,6 +96,34 @@ body {
   td {
     padding: 10px !important;
   }
+}
+
+.close {
+  color: black !important;
+}
+
+.alert {
+  border-radius: 0px !important;
+  text-align: center;
+}
+
+.confirm-title {
+  font-size: 2em;
+}
+
+.confirm-prompt {
+  font-size: 1.2em;
+  padding: 20px;
+}
+
+.confirm-tip {
+  padding: 20px;
+}
+
+.fa {
+  margin-top: 2px;
+  margin-left: 5px;
+  color: #c4d5d6;
 }
 
 @media screen and (max-width: 400px) {

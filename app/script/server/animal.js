@@ -30,5 +30,8 @@ export default {
     },
     collectPlant: function (plantName) {
         return Net.get('/animal/collectPlant/' + plantName + '/');
+    },
+    metempsychosis: function (useSouls) {
+        return Net.get('/animal/metempsychosis/' + useSouls + '/');
     }
 }
