@@ -1,24 +1,33 @@
-import Toastr from '../plugin/toastr/toastr.min'
-
-Toastr.options = {
-    "positionClass": "toast-bottom-right",
-}
+require('../plugin/spop/spop.min.js');
 
 export default {
     filters: (value) => {
         return msgs[value];
     },
     error: function (content) {
-        Toastr.error(this.filters(content));
+        this.toPop(this.filters(content), 'error')
     },
     warning: function (content) {
-        Toastr.warning(this.filters(content));
+        this.toPop(this.filters(content), 'warning')
     },
     info: function (content) {
-        Toastr.info(this.filters(content));
+        this.toPop(this.filters(content))
     },
     infoWithNoFilter: function (content) {
-        Toastr.info(content);
+        this.toPop(content)
+    },
+    toPop: function (content, style, time = 3000) {
+
+        if (time < 0) {
+            time = false;
+        }
+
+        spop({
+            template: content,
+            position: 'bottom-center',
+            autoclose: time,
+            style: style
+        });
     }
 }
 
@@ -87,6 +96,12 @@ let msgs = {
     prop_souls: "和世界里的其他生物互动将会获得魂值,当你离开这个世界时,魂值有可能让你获得更好的来生",
     metempsychosisCount: "轮回倒计时",
     prop_metempsychosisCount: "当倒计时结束时,你的此生修炼完成,你可以开始一段新的生命",
+    point_to_alloc: "有未分配的属性点",
+    alloc: "分配",
+    point_left: "可用点数",
+    no_alloc: "未行进任何分配",
+    alloc_complete: "分配完成,你现在更强壮了",
+    reset: "重置",
     explore: "探索",
     sleep: "睡眠",
     sleeping: "睡眠中",

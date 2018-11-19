@@ -52,7 +52,7 @@ body {
 }
 
 .table-content-center {
-  margin-bottom: 0px !important;
+  margin-bottom: 0 !important;
   th {
     text-align: center;
     vertical-align: middle !important;
@@ -64,7 +64,7 @@ body {
 }
 
 .thumbnail {
-  margin-bottom: 0px !important;
+  margin-bottom: 0 !important;
 }
 
 .action-button {
@@ -103,7 +103,7 @@ body {
 }
 
 .alert {
-  border-radius: 0px !important;
+  border-radius: 0 !important;
   text-align: center;
 }
 
@@ -124,6 +124,12 @@ body {
   margin-top: 2px;
   margin-left: 5px;
   color: #c4d5d6;
+}
+
+.spop-icon {
+  top: 0 !important;
+  bottom: 0 !important;
+  margin: auto;
 }
 
 @media screen and (max-width: 400px) {

@@ -33,5 +33,8 @@ export default {
     },
     metempsychosis: function (useSouls) {
         return Net.get('/animal/metempsychosis/' + useSouls + '/');
+    },
+    addPoint: function (pointAdd) {
+        return Net.post('/animal/addPoint/', pointAdd);
     }
 }
