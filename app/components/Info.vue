@@ -236,7 +236,6 @@
     .profile {
         width: 100%;
         cursor: pointer;
-        background-color: #ecf0f1;
         padding-bottom: 5px;
         padding-right: 1px;
     }

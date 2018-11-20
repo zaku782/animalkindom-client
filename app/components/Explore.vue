@@ -5,74 +5,52 @@
             <div class="alert alert-warning explore-tip" role="alert">{{'tip'|msg}} : {{'explore_tip'|msg}}</div>
         </div>
 
+        <div class="panel panel-default" v-if="plants.length>0">
+            <div class="panel-heading"><strong>{{'find_plant'|msg}}</strong></div>
+            <div class="panel-body">
+                <table class="table table-content-center table-striped table-th-horizontal">
+                    <tbody>
+                    <tr v-for="plant in plants">
+                        <td>{{plant.name|msg}}</td>
+                        <td>{{'satiety'|msg}}<strong>+{{plant.satietyAdd}}</strong>
+                            {{'vigour'|msg}}<strong>+{{plant.vigourAdd}}</strong>
+                            {{'load'|msg}}<strong>+{{plant.weight}}</strong>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-info btn-sm" @click="eatAtOnce(plant)">
+                                {{'eat'|msg}}
+                            </button>
+                            <button type="button" class="btn btn-success btn-sm" @click="collectPlant(plant)">
+                                {{'collect'|msg}}
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-        <table v-if="plants.length > 0"
-               class="table table-content-center table-striped table-th-horizontal">
-            <tr>
-                <th>
-                    {{"res_name"|msg}}
-                </th>
-                <th>
-                    {{"res_function"|msg}}
-                </th>
-                <th>
-                    {{"item_weight"|msg}}
-                </th>
-                <th>
-                    {{"res_operation"|msg}}
-                </th>
-            </tr>
-            <tbody>
-            <tr v-for="plant in plants">
-                <td>{{plant.name|msg}}</td>
-                <td>{{'satiety'|msg}}<strong>+{{plant.satietyAdd}}</strong>
-                    {{'vigour'|msg}}<strong>+{{plant.vigourAdd}}</strong>
-                </td>
-                <td>{{plant.weight}}</td>
-                <td>
-                    <button type="button" class="btn btn-info btn-sm" @click="eatAtOnce(plant)">
-                        {{'eat'|msg}}
-                    </button>
-                    <button type="button" class="btn btn-success btn-sm" @click="collectPlant(plant)">
-                        {{'collect'|msg}}
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
-        <table v-if="animals.length > 0"
-               class="table table-content-center table-striped table-th-horizontal">
-            <tr>
-                <th>
-                    {{"name"|msg}}
-                </th>
-                <th>
-                    {{"species"|msg}}
-                </th>
-                <th>
-                    {{"health"|msg}}
-                </th>
-                <th>
-                    {{"action"|msg}}
-                </th>
-            </tr>
-            <tbody>
-            <tr v-for="animal in animals">
-                <td>{{animal.accountName}}</td>
-                <td>{{animal.name|msg}}</td>
-                <td>{{animal.health}}</td>
-                <td>
-                    <button type="button" class="btn btn-warning btn-sm" @click="">
-                        {{'friend'|msg}}
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm" @click="">
-                        {{'attack'|msg}}
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="panel panel-default" v-if="animals.length>0">
+            <div class="panel-heading"><strong>{{'find_animal'|msg}}</strong></div>
+            <div class="panel-body">
+                <table class="table table-content-center table-striped table-th-horizontal">
+                    <tbody>
+                    <tr v-for="animal in animals">
+                        <td>{{animal.accountName}}</td>
+                        <td>{{animal.name|msg}}</td>
+                        <td>
+                            <button type="button" class="btn btn-warning btn-sm" @click="">
+                                {{'friend'|msg}}
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm" @click="">
+                                {{'attack'|msg}}
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <div v-if="plants.length===0 && animals.length===0" class="nothing">{{'find_nothing'|msg}}</div>
     </div>
@@ -151,10 +129,6 @@
         margin-top: 15px;
     }
 
-    table {
-        margin-top: 15px;
-    }
-
     .nothing {
         text-align: center;
         padding-top: 30%;
@@ -168,10 +142,30 @@
         vertical-align: middle;
     }
 
+    .panel-body {
+        padding: 0px;
+    }
+
+    .panel-heading {
+        font-size: 2em;
+    }
+
+    .panel {
+        margin-top: 15px;
+    }
+
     @media screen and (max-width: 400px) {
         .explore-tip {
             display: block;
             margin-top: 15px;
+        }
+
+        .panel-heading {
+            font-size: 1.2em;
+        }
+
+        .panel {
+            margin-top: 0;
         }
     }
 </style>
