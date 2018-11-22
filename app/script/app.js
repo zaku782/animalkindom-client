@@ -6,6 +6,7 @@ import LandComponent from '../components/Land.vue'
 import ExploreComponent from '../components/Explore.vue'
 import BagItemComponent from '../components/BagItem.vue'
 import AddPropComponent from '../components/AddProp.vue'
+import EventComponent from '../components/Event.vue'
 
 //使用路由插件
 Vue.use(VueRouter)
@@ -22,12 +23,13 @@ export default {
                 {path: '/land', component: LandComponent},
                 {path: '/explore', component: ExploreComponent},
                 {path: '/items', name: 'Items', component: BagItemComponent},
-                {path: '/prop', component: AddPropComponent}
+                {path: '/prop', component: AddPropComponent},
+                {path: '/event/:type', component: EventComponent}
             ]
 
             const router = new VueRouter({
                 routes
-            })
+            });
 
             this.router = new Vue({
                 router

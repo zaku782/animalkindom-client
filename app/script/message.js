@@ -157,6 +157,14 @@ let msgs = {
     move_to: "移动到",
     friend: "交友",
     attack: "攻击",
+    gift: "赠送",
+    request_sent: "请求已发出",
+    make_friend_tip: "想你和做朋友",
+    agree: "欣然同意",
+    reject: "残忍拒绝",
+    event: "事件",
+    check: "查看事件",
+    unread_msg: "有未读事件",
     /*-----------------------------------------------------------------------*/
 
 };

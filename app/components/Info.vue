@@ -177,6 +177,7 @@
                 this.info.satiety = this.info.satiety - sleepData.satietyCost;
             });
 
+
             $(".fa-question-circle-o").popover({})
         },
         methods: {
@@ -185,11 +186,14 @@
                     if (res.type === 'success') {
                         this.info = res.data;
 
+                        localStorage.setItem("animalId", this.info.id);
+
                         if (this.info.point) {
                             Message.toPop(Message.filters('point_to_alloc') + ' <a href="#/prop/" data-spop="close">' + Message.filters('alloc') + '</a>', 'warning', -1);
                         }
 
                         this.img = require("../assets/images/animal/" + this.info.name + "/" + this.info.growLevel + ".jpg");
+
                         App.hub.$emit('infoLoaded', {
                             'sleeping': this.info.sleepTime != null
                         });
@@ -221,6 +225,9 @@
                         this.getInfo();
                     }
                 })
+            },
+            test: function () {
+                console.log('xx')
             }
         },
         components: {

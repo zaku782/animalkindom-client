@@ -36,5 +36,8 @@ export default {
     },
     addPoint: function (pointAdd) {
         return Net.post('/animal/addPoint/', pointAdd);
+    },
+    makeFriend: function (to) {
+        return Net.get('/animal/makeFriend/' + to + '/');
     }
 }

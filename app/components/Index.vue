@@ -23,6 +23,11 @@
                 {{'land'|msg}}
             </div>
         </div>
+        <div class="col-md-4 col-xs-12 col-sm-6 action-button" @click="event">
+            <div class="btn btn-purple big-btn">
+                {{'event'|msg}}
+            </div>
+        </div>
         <div class="col-md-4 col-xs-12 col-sm-6 action-button" @click="signOut">
             <div class="btn btn-danger big-btn">
                 {{'sign_out'|msg}}
@@ -45,13 +50,14 @@
         },
         data: function () {
             return {
-                sleepStatus: 'sleep'
+                sleepStatus: 'sleep',
+                animalId: 0
             }
         },
         mounted: function () {
             App.hub.$on('infoLoaded', (info) => {
                 this.sleepStatus = info.sleeping ? 'sleeping' : 'sleep';
-            })
+            });
         },
         methods: {
             sleep: function () {
@@ -89,6 +95,11 @@
                 } else {
                     Message.error('need_awake')
                 }
+            },
+            event: function () {
+                this.act(() => {
+                    App.router.$router.push('event/friend');
+                })
             }
         },
         components: {Info},

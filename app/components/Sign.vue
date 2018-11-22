@@ -105,7 +105,6 @@
     .login-form {
         width: 300px;
         margin: auto;
-        background-color: #eceff1;
         border-radius: 6px;
         padding: 10px 10px;
         text-align: center;

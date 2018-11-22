@@ -141,6 +141,20 @@ body {
   border-radius: 0 !important;
 }
 
+.friend-confirm-buttons {
+  margin-top: 10px;
+}
+
+.message-tip {
+  color: #ffea32 !important;
+}
+
+.btn-purple {
+  color: #fff;
+  background-color: #7e4994;
+  border-color: #7e4994;
+}
+
 @media screen and (max-width: 400px) {
   .table-th-horizontal {
     th {

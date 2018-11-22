@@ -2920,9 +2920,9 @@ textarea.input-lg, select[multiple].input-lg {
 }
 
 .btn-default {
-    color: #ffffff;
-    background-color: #95a5a6;
-    border-color: #95a5a6
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
 }
 
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open>.dropdown-toggle.btn-default {

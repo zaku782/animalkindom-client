@@ -39,7 +39,7 @@
                         <td>{{animal.accountName}}</td>
                         <td>{{animal.name|msg}}</td>
                         <td>
-                            <button type="button" class="btn btn-warning btn-sm" @click="">
+                            <button type="button" class="btn btn-warning btn-sm" @click="makeFriend(animal.id)">
                                 {{'friend'|msg}}
                             </button>
                             <button type="button" class="btn btn-danger btn-sm" @click="">
@@ -115,6 +115,13 @@
                         this.plants = this.plants.filter(p => p !== plant);
                     }
 
+                })
+            },
+            makeFriend: function (to) {
+                Animal.makeFriend(to).then((res) => {
+                    if (res.type === 'success') {
+                        Message.info('request_sent')
+                    }
                 })
             }
         },

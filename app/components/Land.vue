@@ -32,7 +32,6 @@
     import Message from '../script/message.js'
     import SvgLand from '../script/svgland.js'
     import Land from '../script/server/land.js'
-    import App from '../script/app.js'
 
     export default {
         name: "Land",
