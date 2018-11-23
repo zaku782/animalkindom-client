@@ -1,6 +1,14 @@
 require('../plugin/spop/spop.min.js');
 
 export default {
+    filterByTemplate: (template, ...args) => {
+        template = msgs[template];
+        args.forEach(function (arg, index) {
+            template = template.replace('&' + index, arg);
+            template = template.replace('@' + index, msgs[arg]);
+        });
+        return template;
+    },
     filters: (value) => {
         return msgs[value];
     },
@@ -59,15 +67,15 @@ let msgs = {
     souls_for_metempsychosis: "用于转生的魂值",
     /*-----------------------------------------------------------------------*/
     /*--------------------------------动物------------------------------------*/
-    lion: "狮",
-    tiger: "虎",
-    bear: "熊",
+    lion: "狮子",
+    tiger: "老虎",
+    bear: "棕熊",
     bison: "野牛",
-    leopard: "豹",
+    leopard: "猎豹",
     kangaroo: "袋鼠",
     rhinoceros: "犀牛",
-    monkey: "猴",
-    elephant: "象",
+    monkey: "猴子",
+    elephant: "大象",
     chimpanzees: "猩猩",
     zebra: "斑马",
     deer: "鹿",
@@ -159,12 +167,13 @@ let msgs = {
     attack: "攻击",
     gift: "赠送",
     request_sent: "请求已发出",
-    make_friend_tip: "想你和做朋友",
-    agree: "欣然同意",
-    reject: "残忍拒绝",
+    make_friend_request: "@0&1想和你交个朋友",
+    accept: "接受",
+    reject: "拒绝",
     event: "事件",
     check: "查看事件",
     unread_msg: "有未读事件",
+    from: "来自"
     /*-----------------------------------------------------------------------*/
 
 };

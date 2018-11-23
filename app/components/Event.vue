@@ -1,5 +1,5 @@
 <template>
-    <div class="event-table">
+    <div class="event-list">
         <ul class="nav nav-pills event-type">
             <li role="presentation"><a href="#friend">{{ 'friend' | msg }}</a></li>
             <li role="presentation"><a href="#attack">{{ 'attack' | msg }}</a></li>
@@ -8,10 +8,22 @@
         <div class="tab-content">
             <div class="tab-pane" id="friend">
                 <table v-if="friendEvent.length > 0"
-                       class="table table-content-center table-striped table-th-horizontal">
+                       class="table table-content-center table-striped table-th-horizontal data">
                     <tbody>
-                    <tr v-for="friend in friendEvent">
-                        <td>{{friend.requesterName}}</td>
+                    <tr v-for="event in friendEvent">
+                        <td>
+                            <if v-if="event.type==='friend_request'">
+                                {{'make_friend_request'|msgTemp(event.senderSpecies,event.senderName)}}
+                                <if v-if="!event.done">
+                                    <button type="button" class="btn btn-success btn-sm" @click="accept">
+                                        {{'accept'|msg}}
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm" @click="reject">
+                                        {{'reject'|msg}}
+                                    </button>
+                                </if>
+                            </if>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -56,14 +68,23 @@
             $("a[href='#" + this.$route.params.type + "']").trigger('click');
         },
         filters: {
-            msg: Message.filters
+            msg: Message.filters,
+            msgTemp: Message.filterByTemplate
         }
     }
 </script>
 
 <style scoped>
-    .event-table {
+    .event-list {
         margin-top: 25px;
         margin-left: 15px;
+    }
+
+    .data {
+        margin-top: 10px;
+    }
+
+    .btn{
+        margin-left: 5px;
     }
 </style>

@@ -33,7 +33,7 @@ function connect() {
             if (msg.data) {
                 let message = msg.data.split("_");
                 if (message[0] === 'friend') {
-                    Message.toPop(Message.filters(message[1]) + '[' + message[2] + ']' + Message.filters('make_friend_tip') + ' <a href="#/event/friend/" class="message-tip" data-spop="close">' + Message.filters('check') + '</a>', 'info', -1)
+                    Message.toPop(Message.filterByTemplate('make_friend_request',message[1], message[2]) + ' <a href="#/event/friend/" class="message-tip" data-spop="close">' + Message.filters('check') + '</a>', 'info', -1)
                 } else {
                     Message.toPop(Message.filters(msg.data) + ' <a href="#/event/friend/" class="message-tip" data-spop="close">' + Message.filters('check') + '</a>', 'warning', -1)
                 }
