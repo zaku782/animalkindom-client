@@ -57,6 +57,7 @@ module.exports = {
         port: 8888,
         disableHostCheck: true
     },
+    devtool: "inline-source-map",
     plugins: [
         new HtmlWebpackPlugin({
             filename: 'index.html',
