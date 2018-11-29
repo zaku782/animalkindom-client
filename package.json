@@ -4,7 +4,8 @@
   "description": "Animal Kindom",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --host 0.0.0.0"
+    "start": "webpack-dev-server --host 0.0.0.0 --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
   },
   "author": "zhgame",
   "license": "ISC",
@@ -29,7 +30,8 @@
     "vue-template-compiler": "^2.5.17",
     "webpack": "^4.26.1",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10"
+    "webpack-dev-server": "^3.1.10",
+    "webpack-merge": "^4.1.4"
   },
   "dependencies": {
     "axios": "^0.18.0",
