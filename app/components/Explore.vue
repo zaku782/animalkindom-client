@@ -120,7 +120,9 @@
             makeFriend: function (to) {
                 Animal.makeFriend(to).then((res) => {
                     if (res.type === 'success') {
-                        Message.info('request_sent')
+                        Message.info('request_sent');
+                    } else {
+                        Message.warning(res.content);
                     }
                 })
             }

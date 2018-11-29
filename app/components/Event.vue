@@ -47,7 +47,7 @@
             }
         },
         mounted: function () {
-
+            let component = this;
             $('.event-type a').click(function (e) {
                 e.preventDefault();
                 $(this).tab('show');
@@ -55,7 +55,7 @@
                 if (e.target.hash === '#friend') {
                     Event.friendEvent().then((res) => {
                         if (res.type === 'success') {
-                            this.friendEvent = res.data;
+                            component.friendEvent = res.data;
                         }
                     })
                 } else if (e.target.hash === '#attack') {
@@ -84,7 +84,7 @@
         margin-top: 10px;
     }
 
-    .btn{
+    .btn {
         margin-left: 5px;
     }
 </style>
