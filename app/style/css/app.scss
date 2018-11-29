@@ -155,6 +155,10 @@ body {
   border-color: #7e4994;
 }
 
+.progress-bar {
+  line-height: 21px !important;
+}
+
 @media screen and (max-width: 400px) {
   .table-th-horizontal {
     th {

@@ -21,13 +21,8 @@
 
 <style scoped>
     .progress {
-        margin-bottom: 0px;
-        border-radius: 0px;
+        margin-bottom: 0;
+        border-radius: 0;
         height: unset;
-        line-height: 21px;
-    }
-
-    .progress-bar {
-        line-height: 21px;
     }
 </style>
