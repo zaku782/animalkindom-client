@@ -15,10 +15,16 @@ module.exports = merge(common, {
             name: 'manifest'
         },
         splitChunks: {
-            chunks: 'all'
+            chunks: 'all',
+            cacheGroups: {
+                plugin: {
+                    test: /[\\/]plugin[\\/]/,
+                    priority: 0,
+                }
+            }
         }
     },
     plugins: [
-        new CleanWebpackPlugin(['dist']),
+        new CleanWebpackPlugin(['dist'])
     ]
 });

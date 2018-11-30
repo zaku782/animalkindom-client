@@ -20,7 +20,6 @@ export default {
 }
 
 function connect() {
-    console.log('connect to server');
     let animalId = localStorage.getItem("animalId");
     if (animalId) {
         socketConnect = new WebSocket((Env.baseURL + "/websocket/" + animalId).replace("http", "ws"));

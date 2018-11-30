@@ -1,5 +1,3 @@
-import svg from 'svg'
-
 let mouseDown = false;
 let mouseDownPos = {x: 0, y: 0};
 let canvasOffset = {left: 0, top: 0};
@@ -24,41 +22,48 @@ let centerLand = {x: 0, y: 0};
 export default {
     drawLand: function (frame, canvasId, landsData, landInfoFunction, resize) {
         if (!resize) {
-            draw = svg(canvasId)
+            import(/* webpackChunkName: "svg" */ 'svg').then(svg => {
+                draw = svg.default(canvasId);
+                doDraw(landInfoFunction, landsData, canvasId, frame);
+            });
         } else {
             draw.clear();
+            doDraw(landInfoFunction, landsData, canvasId, frame);
         }
-        landFunction = landInfoFunction;
-        lands = landsData;
-        drawLands = [];
-
-        let maxLandNumber = lands.discoveredLands[lands.discoveredLands.length - 1].id;
-        let maxLoop = loopName(maxLandNumber);
-
-        let canvas = $("#" + canvasId);
-        addEvents(frame, canvas);
-
-        let minLandSizeForDraw = maxLoop * (oneLandSize.x + lineLength) * 2 + oneLandSize.x * 2;
-        canvasHeight = minLandSizeForDraw < frame.height() ? frame.height() : minLandSizeForDraw;
-        canvasWidth = minLandSizeForDraw < frame.width() ? frame.width() : minLandSizeForDraw;
-
-        canvas.height(canvasHeight);
-        canvas.width(canvasWidth);
-
-        canvasCenter.x = canvasWidth / 2;
-        canvasCenter.y = canvasHeight / 2;
-
-        drawLand();
-
-        //move current to center
-        canvasOffset.left = frame.width() / 2 - canvasWidth / 2 - (currentOffset.x - centerLand.x);
-        canvasOffset.top = frame.height() / 2 - canvasHeight / 2 - (currentOffset.y - centerLand.y);
-        canvas.css('left', canvasOffset.left);
-        canvas.css('top', canvasOffset.top);
     },
     reachable: function (toLand) {
         return round(lands.current.id).includes(toLand) && lands.current.id !== toLand;
     }
+}
+
+function doDraw(landInfoFunction, landsData, canvasId, frame) {
+    landFunction = landInfoFunction;
+    lands = landsData;
+    drawLands = [];
+
+    let maxLandNumber = lands.discoveredLands[lands.discoveredLands.length - 1].id;
+    let maxLoop = loopName(maxLandNumber);
+
+    let canvas = $("#" + canvasId);
+    addEvents(frame, canvas);
+
+    let minLandSizeForDraw = maxLoop * (oneLandSize.x + lineLength) * 2 + oneLandSize.x * 2;
+    canvasHeight = minLandSizeForDraw < frame.height() ? frame.height() : minLandSizeForDraw;
+    canvasWidth = minLandSizeForDraw < frame.width() ? frame.width() : minLandSizeForDraw;
+
+    canvas.height(canvasHeight);
+    canvas.width(canvasWidth);
+
+    canvasCenter.x = canvasWidth / 2;
+    canvasCenter.y = canvasHeight / 2;
+
+    drawLand();
+
+    //move current to center
+    canvasOffset.left = frame.width() / 2 - canvasWidth / 2 - (currentOffset.x - centerLand.x);
+    canvasOffset.top = frame.height() / 2 - canvasHeight / 2 - (currentOffset.y - centerLand.y);
+    canvas.css('left', canvasOffset.left);
+    canvas.css('top', canvasOffset.top);
 }
 
 function drawLand() {
@@ -77,7 +82,7 @@ function drawOneLand(pos, land) {
             landFunction(land)
         });
 
-    let text = draw.text(land.name + "")
+    let text = draw.text(land.name + '')
         .font({
             family: 'Microsoft YaHei',
             weight: 'bold',
@@ -92,7 +97,7 @@ function drawOneLand(pos, land) {
     if (land.id === lands.current.id) {
         currentOffset.x = pos.x;
         currentOffset.y = pos.y;
-        text.fill(landCurrentColor)
+        text.fill(landCurrentColor);
         rect.stroke({color: landLineColor, width: landChooseLineWidth})
     } else {
         rect.stroke({color: landLineColor, width: landUnChooseLineWidth})

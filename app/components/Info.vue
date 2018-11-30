@@ -169,16 +169,12 @@
             }
         },
         mounted: function () {
-
             this.getInfo();
-
             App.hub.$on('sleepEnd', (sleepData) => {
                 this.info.vigour = this.info.vigour + sleepData.vigourRecover;
                 this.info.satiety = this.info.satiety - sleepData.satietyCost;
             });
-
-
-            $(".fa-question-circle-o").popover({})
+            $('.fa-question-circle-o').popover()
         },
         methods: {
             getInfo: function () {
@@ -225,9 +221,6 @@
                         this.getInfo();
                     }
                 })
-            },
-            test: function () {
-                console.log('xx')
             }
         },
         components: {

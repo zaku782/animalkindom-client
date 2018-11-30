@@ -37,7 +37,7 @@
 </template>
 
 <script>
-    require('../style/css/anim.scss')
+    require('../style/css/anim.scss');
     import Message from '../script/message.js'
     import Account from '../script/server/account.js'
     import App from '../script/app.js'
