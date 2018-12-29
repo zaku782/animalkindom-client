@@ -39,5 +39,8 @@ export default {
     },
     makeFriend: function (to) {
         return Net.get('/animal/makeFriend/' + to + '/');
+    },
+    friendReject: function (to) {
+        return Net.get('/animal/friendReject/' + to + '/');
     }
 }

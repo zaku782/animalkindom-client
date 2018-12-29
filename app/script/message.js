@@ -1,6 +1,12 @@
 require('../plugin/spop/spop.min.js');
 
 export default {
+    /**
+     *
+     * @param template
+     * @param args &处的替换文本直接使用参数,@处的替换文本使用filter
+     * @returns {*}
+     */
     filterByTemplate: (template, ...args) => {
         template = msgs[template];
         args.forEach(function (arg, index) {
@@ -167,7 +173,9 @@ let msgs = {
     attack: "攻击",
     gift: "赠送",
     request_sent: "请求已发出",
-    make_friend_request: "@0&1想和你交个朋友",
+    make_friend_request: "你请求和@0&1交个朋友",
+    make_friend_receive: "@0&1想和你交个朋友",
+    friend_reject: "@0&1拒绝了你的好友请求",
     accept: "接受",
     reject: "拒绝",
     event: "事件",
